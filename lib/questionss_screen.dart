@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 class QuistionsScreen extends StatefulWidget {
   const QuistionsScreen({super.key, required this.onSelectAnswer});
-  final void Function(String answer) onSelectAnswer;
+  final void Function(String answer, int pos) onSelectAnswer;
 
   @override
   State<QuistionsScreen> createState() {
@@ -17,9 +17,16 @@ class _QuistionsScreenState extends State<QuistionsScreen> {
   var currentQuestionIndex = 0;
 
   void answerQuestion(String selectedAnswer) {
-    widget.onSelectAnswer(selectedAnswer);
+    widget.onSelectAnswer(selectedAnswer, currentQuestionIndex);
     setState(() {
       currentQuestionIndex++; // ++ +=
+    });
+  }
+
+  void previouQuestion() {
+    if (currentQuestionIndex <= 0) return;
+    setState(() {
+      currentQuestionIndex--;
     });
   }
 
@@ -55,6 +62,29 @@ class _QuistionsScreenState extends State<QuistionsScreen> {
                 },
               );
             }),
+            const SizedBox(
+              height: 70,
+            ),
+            Row(children: [
+              ElevatedButton.icon(
+                onPressed: previouQuestion,
+                style: ElevatedButton.styleFrom(
+                  // alignment: const  Alignment(50, 0),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
+                  backgroundColor: const Color.fromARGB(255, 0, 0, 0),
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(40),
+                  ),
+                ),
+                icon: const Icon(Icons.arrow_back),
+                label: const Text(
+                  'Previous',
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ]),
             // AnswerButton(answerText: currentQuestion.answers[0], onTap: () {}),
             // AnswerButton(answerText: currentQuestion.answers[1], onTap: () {}),
             // AnswerButton(answerText: currentQuestion.answers[2], onTap: () {}),
